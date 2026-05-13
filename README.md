@@ -1,7 +1,7 @@
 # `docs.yui.kim` 文档笔记专栏
 > 真咲唯的文档笔记专栏，展示不隐私的实时更新笔记
 > 
-> 构建版本：`0.0.2` 内容版本：`0.0.2` 最后修改时间：`2026-05-08` 审核人：`MasakiYui`
+> 构建版本：`0.0.3` 内容版本：`0.0.2` 最后修改时间：`2026-05-14` 审核人：`MasakiYui`
 ## 项目结构
 ```bash
 docs.yui.kim/
@@ -11,7 +11,7 @@ docs.yui.kim/
 ├── docs/              # 面包屑导航展示的文档
 │   ├── archive
 │   ├── CHANGELOG.md
-│   ├── home.md
+│   ├── home.md        # 首页
 │   ├── Languages
 │   ├── QuickRef
 │   └── Tools  
@@ -19,6 +19,7 @@ docs.yui.kim/
 ├── LICENSE             # 许可证文件
 ├── index.html          # 主页
 ├── js/
+│   ├── lazy-load.js    # 图片懒加载逻辑
 │   ├── main.js         # 交互逻辑
 │   └── structure.js    # 文件路径配置
 └── README.md           # 项目说明
