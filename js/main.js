@@ -141,7 +141,7 @@
             
             html += `<a href="#${childPath}" class="directory-item">
                 <span class="directory-icon">
-                    <img src="${iconSrc}" alt="${iconAlt}" width="20" height="20" loading="lazy">
+                    <img src="${iconSrc}" alt="${iconAlt}" width="20" height="20">
                 </span>
                 <span class="directory-name">${escapeHtml(displayName)}</span>
                 <span class="directory-arrow">&rarr;</span>
