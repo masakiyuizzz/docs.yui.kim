@@ -46,34 +46,38 @@
     let lastDocPath = '';
     
     function handleHashChange() {
-        const hash = window.location.hash.slice(1);
+        const rawHash = window.location.hash.slice(1);
         
-        if (!hash) {
+        if (!rawHash) {
             lastDocPath = DEFAULT_PATH;
             navigateTo(DEFAULT_PATH);
             return;
         }
         
-        if (hash === ROOT_LIST_PATH) {
+        const anchorIndex = rawHash.indexOf('#');
+        const path = anchorIndex >= 0 ? rawHash.substring(0, anchorIndex) : rawHash;
+        const anchor = anchorIndex >= 0 ? rawHash.substring(anchorIndex) : '';
+        
+        if (path === ROOT_LIST_PATH) {
             lastDocPath = '';
             navigateTo('');
             return;
         }
         
-        if (hash.includes('.md') || hash.includes('/')) {
-            lastDocPath = hash;
-            navigateTo(hash);
+        if (path.includes('.md') || path.includes('/')) {
+            lastDocPath = path;
+            navigateTo(path, anchor);
             return;
         }
         
-        const node = findNode(hash, DOC_STRUCTURE);
+        const node = findNode(path, DOC_STRUCTURE);
         if (node) {
-            lastDocPath = hash;
-            navigateTo(hash);
+            lastDocPath = path;
+            navigateTo(path, anchor);
         }
     }
     
-    function navigateTo(path) {
+    function navigateTo(path, anchor) {
         const node = findNode(path, DOC_STRUCTURE);
         
         if (!node) {
@@ -87,7 +91,7 @@
             renderDirectory(node, path);
             hideMarkdown();
         } else {
-            renderFile(node, path);
+            renderFile(node, path, anchor);
             hideDirectory();
         }
         
@@ -153,7 +157,7 @@
         contentHeaderEl.style.display = 'block';
     }
     
-    function renderFile(node, path) {
+    function renderFile(node, path, anchor) {
         const filePath = `docs/${path}`;
         
         fetch(filePath)
@@ -166,24 +170,34 @@
             .then(content => {
                 const renderer = new marked.Renderer();
                 renderer.heading = function(data) {
-                    const text = data.text;
-                    const depth = data.depth;
+                    const { text, depth } = data;
                     const slug = text
                         .toLowerCase()
-                        .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+                        .replace(/[`~]/g, '')
+                        .replace(/&[^;]+;/g, '')
+                        .replace(/<[^>]+>/g, '')
+                        .replace(/[^\w\u4e00-\u9fa5]/g, '-')
                         .replace(/^-+|-+$/g, '');
                     return `<h${depth} id="${slug}">${text}</h${depth}>`;
                 };
                 
                 marked.setOptions({
-                    renderer: renderer,
-                    headerIds: true,
-                    mangle: false
+                    renderer: renderer
                 });
                 
                 const html = marked.parse(content);
                 markdownBodyEl.innerHTML = html;
                 processLinks();
+                
+                if (anchor) {
+                    const targetId = decodeURIComponent(anchor.substring(1));
+                    setTimeout(() => {
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 100);
+                }
             })
             .catch(error => {
                 showError('无法加载文档', path);
@@ -209,30 +223,55 @@
             }
             
             if (href.startsWith('#')) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = decodeURIComponent(href.substring(1));
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        history.pushState(null, null, `${window.location.pathname}${window.location.search}#${currentPath}${href}`);
+                    }
+                });
                 return;
             }
             
             let newPath;
-            if (href.startsWith('./')) {
-                newPath = currentDir ? `${currentDir}/${href.slice(2)}` : href.slice(2);
-            } else if (href.startsWith('../')) {
+            let anchor = '';
+            
+            const hashIndex = href.indexOf('#');
+            if (hashIndex > 0) {
+                anchor = href.substring(hashIndex);
+            }
+            
+            const pathPart = hashIndex > 0 ? href.substring(0, hashIndex) : href;
+            
+            if (pathPart.startsWith('./')) {
+                newPath = currentDir ? `${currentDir}/${pathPart.slice(2)}` : pathPart.slice(2);
+            } else if (pathPart.startsWith('../')) {
                 const dirParts = currentDir.split('/').filter(p => p);
                 let upCount = 0;
-                let remaining = href;
+                let remaining = pathPart;
                 while (remaining.startsWith('../')) {
                     upCount++;
                     remaining = remaining.slice(3);
                 }
-                dirParts.splice(-upCount);
+                const effectiveUp = upCount - 1;
+                if (effectiveUp > 0) {
+                    dirParts.splice(-effectiveUp);
+                }
                 newPath = dirParts.length > 0 ? `${dirParts.join('/')}/${remaining}` : remaining;
+            } else if (pathPart) {
+                newPath = currentDir ? `${currentDir}/${pathPart}` : pathPart;
             } else {
-                newPath = currentDir ? `${currentDir}/${href}` : href;
+                return;
             }
             
-            link.setAttribute('href', `#${newPath}`);
+            const fullPath = newPath + anchor;
+            
+            link.setAttribute('href', `#${fullPath}`);
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                window.location.hash = newPath;
+                window.location.hash = fullPath;
             });
         });
     }

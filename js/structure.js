@@ -17,6 +17,46 @@ const DOC_STRUCTURE = {
             title: '/ Languages (编程语言)',
             icon: 'assets/code-line.svg',
             children: [
+                {
+                    name: 'JavaScript',
+                    type: 'folder',
+                    title: '/ JavaScript (JS)',
+                    icon: 'assets/javascript-fill.svg',
+                    children: [
+                    ]
+                },
+                {
+                    name: 'HTML',
+                    type: 'folder',
+                    title: '/ HTML (HTML)',
+                    icon: 'assets/html5-fill.svg',
+                    children: [
+                    ]
+                },
+                {
+                    name: 'CSS',
+                    type: 'folder',
+                    title: '/ CSS (CSS)',
+                    icon: 'assets/css3-fill.svg',
+                    children: [
+                    ]
+                },
+                {
+                    name: 'Markdown',
+                    type: 'folder',
+                    title: '/ Markdown (MD)',
+                    icon: 'assets/markdown-line.svg',
+                    children: [
+                    ]
+                },
+                {
+                    name: 'Golang',
+                    type: 'folder',
+                    title: '/ Golang (Go)',
+                    icon: 'assets/golang.svg',
+                    children: [
+                    ]
+                }
             ]
         },
         {
@@ -33,6 +73,58 @@ const DOC_STRUCTURE = {
             title: '/ Tools (工具)',
             icon: 'assets/tools-fill.svg',
             children: [
+                {
+                    name: 'HomeBrew',
+                    type: 'folder',
+                    title: '/ HomeBrew (brew)',
+                    icon: 'assets/beer-fill.svg',
+                    children: [
+                    ]                    
+                },
+                {
+                    name: 'Git',
+                    type: 'folder',
+                    title: '/ Git (git)',
+                    icon: 'assets/git.svg',
+                    children: [
+                    ]
+                },
+                {
+                    name: 'Terminal',
+                    type: 'folder',
+                    title: '/ Terminal (终端)',
+                    icon: 'assets/terminal-box-line.svg',
+                    children: [
+                        {
+                            name: 'macOS-Terminal.md',
+                            type: 'file',
+                            title: 'macOS-Terminal.md (命令收录)',
+                            icon: 'assets/markdown-line.svg'
+                        },
+                        {
+                            name: 'Terminal-Others.md',
+                            type: 'file',
+                            title: 'Terminal-Others.md (命令收录-补充说明)',
+                            icon: 'assets/markdown-line.svg'
+                        }
+                    ]
+                },
+                {
+                    name: 'Github',
+                    type: 'folder',
+                    title: '/ Github (github)',
+                    icon: 'assets/github-fill.svg',
+                    children: [
+                    ]
+                },
+                {
+                    name: 'Command',
+                    type: 'folder',
+                    title: '/ Command (快捷键)',
+                    icon: 'assets/command-line.svg',
+                    children: [
+                    ]
+                }
             ]
         },
         {
