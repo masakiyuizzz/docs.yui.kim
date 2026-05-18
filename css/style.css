@@ -1,3 +1,21 @@
+@font-face {
+    font-family: 'Maple Mono';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url('https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Maple Mono';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: url('https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff') format('woff');
+}
+
 :root {
     --color-bg: #fafafa;
     --color-bg-card: #ffffff;
@@ -29,7 +47,7 @@
     --transition-slow: 0.4s ease;
     
     --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Maple Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     
     --navbar-height: 56px;
 }
